@@ -48,7 +48,7 @@ module.exports = class extends Generator {
       {
         type: 'confirm',
         name: 'enablessl',
-        message: 'Enable SSL?'
+        message: 'Enable SSL? (Domain must be pointing to server)'
       }
     ];
 
@@ -65,7 +65,7 @@ module.exports = class extends Generator {
         desc = this.props.description,
         sslEnable = this.props.enablessl;
 
-    let options = ['--dir'];
+    let options = ['--dir', '--web', '--unix'];
 
     if (sslEnable == true) {
       options.push('--ssl')
@@ -78,9 +78,38 @@ module.exports = class extends Generator {
     })
     .then(function(res) {
       console.log(chalk.green('Connected'));
-      ssh.exec('virtualmin create-domain --domain ' + siteUrl + ' --pass ' + pass + ' --desc "' + desc + '"', ['--dir'], {
+      ssh.exec('virtualmin create-domain --domain ' + siteUrl + ' --pass ' + pass + ' --desc "' + desc + '"', options, {
         onStdout(chunk) {
           console.log(chalk.green(chunk.toString('utf8')))
+        },
+        onStderr(chunk) {
+          console.log('Error:', chunk.toString('utf8'))
+        },
+      })
+      .then(function() {
+        if (sslEnable == true) {
+          ssh.exec('virtualmin generate-letsencrypt-cert --domain ' + siteUrl, [], {
+            onStdout(chunk) {
+              console.log(chalk.green(chunk.toString('utf8')))
+            },
+            onStderr(chunk) {
+              console.log('Error:', chunk.toString('utf8'))
+            },
+          })
+          .then(function() {
+            ssh.exec('exit', [], {
+              onStdout(chunk) {
+                console.log(chunk.toString('utf8'))
+              },
+              onStderr(chunk) {
+                console.log('Error:', chunk.toString('utf8'))
+              },
+            })
+          })
+          .catch(function(err) {
+            console.log('ERROR', err);
+          })
+        } else {
           ssh.exec('exit', [], {
             onStdout(chunk) {
               console.log(chunk.toString('utf8'))
@@ -89,13 +118,7 @@ module.exports = class extends Generator {
               console.log('Error:', chunk.toString('utf8'))
             },
           })
-        },
-        onStderr(chunk) {
-          console.log('Error:', chunk.toString('utf8'))
-        },
-      })
-      .catch(function(err) {
-        console.log('ERROR', err);
+        }
       })
     })
     .catch(function(err) {
