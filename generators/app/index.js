@@ -58,7 +58,6 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    // let lol = 'virtualmin create-domain --domain foo.com --pass smeg --desc "The server for foo" --unix --dir --webmin --web --dns --mail --limits-from-plan';
     let siteUrl = this.props.siteurl,
         user = this.props.username,
         pass = this.props.password,
