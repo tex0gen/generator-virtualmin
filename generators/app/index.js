@@ -65,7 +65,11 @@ module.exports = class extends Generator {
         desc = this.props.description,
         sslEnable = this.props.enablessl;
 
-    let options = ['--dir', '--web', '--unix'];
+    let options = [
+      '--dir',
+      '--web',
+      '--unix'
+    ];
 
     if (sslEnable == true) {
       options.push('--ssl')
@@ -105,9 +109,13 @@ module.exports = class extends Generator {
                 console.log('Error:', chunk.toString('utf8'))
               },
             })
+            .then(function() {
+              process.exit();
+            })
           })
           .catch(function(err) {
             console.log('ERROR', err);
+            process.exit();
           })
         } else {
           ssh.exec('exit', [], {
@@ -123,6 +131,7 @@ module.exports = class extends Generator {
     })
     .catch(function(err) {
       console.log('ERROR', err);
+      process.exit();
     });
   }
 
