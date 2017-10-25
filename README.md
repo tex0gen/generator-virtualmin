@@ -1,5 +1,7 @@
 # generator-virtualmin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> 
+
+## Description
+This Yeoman generator will connect to your private server via SSH based on credentials given. It will then setup a new virtual server with the credentials you specify. Setting up SSH is optional. If you select YES(default), it will use let's encrypt to apply your SSL. 
 
 ## Installation
 
