@@ -67,7 +67,8 @@ module.exports = class extends Generator {
       '--dir',
       '--web',
       '--unix',
-      '--ftp'
+      '--ftp',
+      '--mysql'
     ];
 
     if (sslEnable == true) {
