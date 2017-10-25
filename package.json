@@ -1,7 +1,7 @@
 {
   "name": "generator-virtualmin",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.4",
+  "description": "Generates virtual servers for virtualmin",
   "homepage": "",
   "author": {
     "name": "Steve",

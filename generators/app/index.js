@@ -1,7 +1,6 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
-const yosay = require('yosay');
 const fs = require('fs');
 const path = require('path');
 const node_ssh = require('node-ssh');
@@ -67,7 +66,8 @@ module.exports = class extends Generator {
     let options = [
       '--dir',
       '--web',
-      '--unix'
+      '--unix',
+      '--ftp'
     ];
 
     if (sslEnable == true) {
